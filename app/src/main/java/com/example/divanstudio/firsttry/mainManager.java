@@ -5,55 +5,51 @@ package com.example.divanstudio.firsttry;
  */
 import android.graphics.Canvas;
 public class mainManager extends Thread {
-    /**Наша скорость в мс = 10*/
+    /** Наша скорость в мс = 10*/
     static final long FPS = 10;
 
-    /**Объект класса GameView*/
+    /** Объект класса GameView*/
     private mainView view;
 
-    /**Задаем состояние потока*/
+    /** Задаем состояние потока*/
     private boolean running = false;
 
-    /**Конструктор класса*/
-    public mainManager(mainView view)
-    {
+    /** Конструктор класса*/
+    public mainManager( mainView view ) {
         this.view = view;
     }
 
-    /**Задание состояния потока*/
-    public void setRunning(boolean run)
-    {
+    /** Задание состояния потока*/
+    public void setRunning( boolean run ) {
         running = run;
     }
 
     /** Действия, выполняемые в потоке */
-
     @Override
-    public void run()
-    {
+    public void run() {
         long ticksPS = 1000 / FPS;
         long startTime;
         long sleepTime;
-        while (running) {
+        while ( running ) {
             Canvas c = null;
             startTime = System.currentTimeMillis();
             try {
                 c = view.getHolder().lockCanvas();
-                synchronized (view.getHolder()) {
-                    view.onDraw(c);
+                synchronized ( view.getHolder() ) {
+                    view.onDraw( c );
                 }
             } finally {
                 if (c != null) {
-                    view.getHolder().unlockCanvasAndPost(c);
+                    view.getHolder().unlockCanvasAndPost( c );
                 }
             }
-            sleepTime = ticksPS-(System.currentTimeMillis() - startTime);
+            sleepTime = ticksPS - ( System.currentTimeMillis() - startTime );
             try {
-                if (sleepTime > 0)
-                    sleep(sleepTime);
+                if ( sleepTime > 0 )
+                    sleep( sleepTime );
                 else
-                    sleep(10);
-            } catch (Exception e) {}
+                    sleep( 10 );
+            } catch ( Exception e ) {}
         }
     }
 }

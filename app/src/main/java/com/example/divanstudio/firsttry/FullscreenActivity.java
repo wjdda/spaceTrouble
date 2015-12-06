@@ -30,6 +30,7 @@ public class FullscreenActivity extends Activity implements OnTouchListener {
         setContentView(mv);
         mv.setOnTouchListener(this);
     }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         mv.setTouchEvent(event);
