@@ -65,10 +65,10 @@ public class mainView extends SurfaceView  {
 
     /*** Функция рисующая все спрайты и фон */
     protected void onDraw(Canvas canvas) {
-        background.onDraw(canvas);
-        meteors.onDraw(canvas);
-        player.onDraw(canvas);
-        controls.onDraw(canvas);
+       if (background != null) background.onDraw(canvas);
+       if (meteors != null) meteors.onDraw(canvas);
+       if (player != null) player.onDraw(canvas);
+       if (controls != null) controls.onDraw(canvas);
     }
 
     /*** Фунция принимаюшая все прикосновения к экрану */
