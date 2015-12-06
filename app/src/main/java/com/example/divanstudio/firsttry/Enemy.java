@@ -56,7 +56,9 @@ public class Enemy {
                 canvX = gameView.getWidth();
                 canvY = rnd.nextInt(gameView.getHeight() - renderHeight);
                 xSpeed = -(rnd.nextInt(5) + 4);
-
+                int someCrop = (rnd.nextInt(3)+1);
+                renderWidth = this.width/someCrop;
+                renderHeight = this.height/someCrop;
             }
             canvX = canvX + xSpeed;
             canvY = canvY + ySpeed;
@@ -68,11 +70,6 @@ public class Enemy {
             Rect src = new Rect(0, height * frameCount , width, height * ( frameCount + 1)); //part of src bitmap
             Rect dst = new Rect(canvX , canvY , canvX + renderWidth, canvY + renderHeight); // screen area
             canvas.drawBitmap(control, src, dst, null);
-            player.isCollision(canvX , canvY , canvX + renderWidth, canvY + renderHeight);
+            player.hideIfCollision(canvX, canvY, canvX + renderWidth, canvY + renderHeight);
         }
-
-//        public boolean isCollision(float x2, float y2) {
-//            boolean isCollision = x2 > canvX && x2 < canvX + width && y2 > canvY && y2 < canvY + height;
-//            return isCollision ;
-//        }
 }

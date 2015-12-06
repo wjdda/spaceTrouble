@@ -1,10 +1,8 @@
 package com.example.divanstudio.firsttry;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +27,8 @@ public class Controls {
         }
     }
 
-    public void isCollision(MotionEvent event) {
-        switch (event.getAction()) {
+    public void isCollision( MotionEvent event ) {
+        switch ( event.getAction() ) {
             case MotionEvent.ACTION_DOWN: // нажатие
                 for (int i = Controls.size() - 1; i >= 0; i--) {
                     Control control = Controls.get(i);
@@ -45,9 +43,21 @@ public class Controls {
                     }
                 }
                 break;
-            case MotionEvent.ACTION_MOVE: // движение
+            case MotionEvent.ACTION_MOVE: //движение
+                for (int i = Controls.size() - 1; i >= 0; i--) {
+                    Control control = Controls.get(i);
+                    if (control.isCollision(event.getX(), event.getY())) {
+                        if (i == 0){
+                            player.moveDown();
+                        }
+                        if (i == 1) {
+                            player.moveUp();
+                        }
+                        break;
+                    }
+                }
                 break;
-            case MotionEvent.ACTION_UP: // отпускание
+            case MotionEvent.ACTION_UP: //отпускание
             case MotionEvent.ACTION_CANCEL:
                 player.moveStop();
                 break;
