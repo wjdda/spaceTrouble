@@ -2,6 +2,8 @@ package com.example.divanstudio.firsttry;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 
 /**
@@ -15,6 +17,8 @@ public class Control {
     private int frameCount = 0;
 
     private Bitmap control;
+    private Paint paint;
+    private String text;
 
     private int canvX;  //convas coords
     private int canvY;  //convas coords
@@ -31,10 +35,30 @@ public class Control {
         this.canvY = canvY + gameView.getHeight() - height * 5;
     }
 
+    public Control (int width, int height, int canvX, int canvY, String text) {
+        this.width = width;
+        this.height = height;
+        this.canvX = canvX;
+        this.canvY = canvY;
+
+        this.paint = new Paint();
+        this.text = text;
+        this.control = null;
+
+        this.paint.setColor(Color.RED);
+        this.paint.setStrokeWidth(0);
+        this.paint.setStyle(Paint.Style.STROKE);
+    }
+
     public void onDraw(Canvas canvas) {
         Rect src = new Rect(width * frameCount, 0, width * ( frameCount + 1), height); //part of src bitmap
         Rect dst = new Rect(canvX, canvY, canvX + width, canvY + height); // screen area
-        canvas.drawBitmap(control, src, dst, null);
+        if (control !=  null) {
+            canvas.drawBitmap(control, src, dst, null);
+        } else {
+            canvas.drawRect(canvX, canvY, canvX + width, canvY + height, paint);
+            canvas.drawText(text, canvX+width/2, canvY+height/2, paint);
+        }
     }
 
     public boolean isCollision(float touchEventX, float touchEventY) {

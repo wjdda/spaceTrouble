@@ -1,88 +1,61 @@
 package com.example.divanstudio.firsttry;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Point;
+import android.graphics.Rect;
+
+import java.util.ArrayList;
+
 /**
- * Created by aaivanov on 11/29/15.
+ * Created by RUINIVAN on 17.12.2015.
  */
- import android.graphics.Bitmap;
- import android.graphics.Canvas;
- import android.graphics.Rect;
-
- import java.util.Random;
-
 public class Sprite {
-    /**Рядков в спрайте = 4*/
-    private static final int BMP_ROWS = 4;
-    /**Колонок в спрайте = 3*/
-    private static final int BMP_COLUMNS = 3;
+//    private int BMP_ROWS;
+//    private int BMP_COLUMNS;
+    Rect srcImgRect;
+    mainView gameView;
+    Bitmap origBmp;
+    int renderWidth;
+    int renderHeight;
+    hitBox sHitBox;
 
-    private mainView gameView;
-    private Bitmap bmp;
+    public Sprite (){};
 
-    private int x = 5;
-    private int y = 0;
+    public Sprite( mainView gameView, Bitmap origBmp, int frameCount, int imgScaleCoef, int BMP_ROWS, int BMP_COLUMNS) {
+        setSpriteData( gameView, origBmp, frameCount, imgScaleCoef, BMP_ROWS, BMP_COLUMNS );
+    }
 
-    private int xSpeed = 5;
-    private int ySpeed = 5;
+    public void setSpriteData ( mainView gameView, Bitmap origBmp, int frameCount, int imgScaleCoef, int BMP_ROWS, int BMP_COLUMNS ) {
+    //    this.BMP_ROWS = BMP_ROWS;
+    //    this.BMP_COLUMNS = BMP_COLUMNS;
 
-    private int currentFrame = 0;
-
-    private int width;
-    private int height;
-
-    public Sprite(mainView gameView, Bitmap bmp)
-    {
         this.gameView = gameView;
-        this.bmp = bmp;
-        this.width = bmp.getWidth() / BMP_COLUMNS;
-        this.height = bmp.getHeight() / BMP_ROWS;
+        this.origBmp = origBmp;
 
-        Random rnd = new Random();
-        xSpeed = rnd.nextInt(10)-5;
-        ySpeed = rnd.nextInt(10)-5;
+        int srcWidth = origBmp.getWidth() / BMP_COLUMNS;
+        int srcHeight  = origBmp.getHeight() / BMP_ROWS;
+        int screenHeight  = this.gameView.getHeight();
+
+        this.srcImgRect = new Rect(0, srcHeight * frameCount, srcWidth, srcHeight * ( frameCount + 1));
+
+        this.renderHeight = (int) ( screenHeight * imgScaleCoef / 100 );
+        this.renderWidth = this.renderHeight * srcWidth / srcHeight;
+        sHitBox = new hitBox(this.renderWidth, this.renderHeight );
     }
 
-    /**Перемещение объекта, его направление*/
-    private void update()
-    {
-        if (x >= gameView.getWidth() - width - xSpeed || x + xSpeed <= 0)
-        {
-            xSpeed = -xSpeed;
-        }
-
-        x = x + xSpeed;
-
-        if (y >= gameView.getHeight() - height - ySpeed || y + ySpeed <= 0)
-        {
-            ySpeed = -ySpeed;
-        }
-
-        y = y + ySpeed;
-        currentFrame = ++currentFrame % BMP_COLUMNS;
+    public boolean checkCollision (ArrayList<Point> hitBox) {
+       return sHitBox.checkCollision(hitBox);
     }
 
-    /**Рисуем наши спрайты*/
-    public void onDraw(Canvas canvas)
-    {
-        update();
-        int srcX = currentFrame * width;
-        int srcY = getAnimationRow() * height;
-        Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);
-        Rect dst = new Rect(x, y, x + width, y + height);
-        canvas.drawBitmap(bmp, src, dst, null);
+    public ArrayList<Point> getHitBox () {
+        return sHitBox.getHitBox();
     }
 
-    // direction = 0 up, 1 left, 2 down, 3 right,
-    // animation = 3 up, 1 left, 0 down, 2 right
-    int[] DIRECTION_TO_ANIMATION_MAP = { 3, 1, 0, 2 };
-    private int getAnimationRow() {
-        double dirDouble = (Math.atan2(xSpeed, ySpeed) / (Math.PI / 2) + 2);
-        int direction = (int) Math.round(dirDouble) % BMP_ROWS;
-        return DIRECTION_TO_ANIMATION_MAP[direction];
-    }
-
-    public boolean isCollision(float x2, float y2) {
-
-        boolean isCollision = x2 > x && x2 < x + width && y2 > y && y2 < y + height;
-        return isCollision ;
+    public void onDraw(Canvas canvas, int x, int y) {
+        sHitBox.updateHitBox(x, y);
+        Rect dst = new Rect(x, y, x + this.renderWidth, y + this.renderHeight);
+        canvas.drawBitmap(this.origBmp, this.srcImgRect, dst, null);
+        sHitBox.onDraw( canvas );
     }
 }

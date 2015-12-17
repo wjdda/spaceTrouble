@@ -2,7 +2,8 @@ package com.example.divanstudio.firsttry;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.view.MotionEvent;
+import android.graphics.Color;
+import android.graphics.Paint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,18 +13,43 @@ import java.util.List;
  */
 public class Enemies {
     private List<Enemy> meteors = new ArrayList<Enemy>();
+    private State state;
+    private Paint paint;
+
+    public Enemies(mainView GameView, Bitmap bmp) {
+        this.state = State.getInstance();
+        this.meteors.add(new Enemy(GameView, bmp, 0));
+        this.meteors.add(new Enemy(GameView, bmp, 1));
+        this.meteors.add(new Enemy(GameView, bmp, 2));
+        this.meteors.add(new Enemy(GameView, bmp, 3));
+
+        paint = new Paint();
+
+        paint.setColor(Color.RED);
+        paint.setStrokeWidth(0);
+        paint.setStyle(Paint.Style.STROKE);
 
 
-    public Enemies(mainView GameView, Bitmap bmp, Player player) {
-        meteors.add(new Enemy(GameView, bmp, 0, player));
-        meteors.add(new Enemy(GameView, bmp, 1, player));
-        meteors.add(new Enemy(GameView, bmp, 2, player));
-        meteors.add(new Enemy(GameView, bmp, 3, player));
+    }
+
+    public boolean isCollision () {
+        for(Enemy meteor : meteors) {
+            if(meteor.isCollision()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onDraw(Canvas canvas) {
         for(Enemy meteor : meteors) {
             meteor.onDraw(canvas);
+        }
+        if (isCollision()) {
+           // state.setState("Menu");
+            canvas.drawRect(0, 0, 40, 40, paint);
+        } else {
+           // state.setState("Play");
         }
     }
 }
