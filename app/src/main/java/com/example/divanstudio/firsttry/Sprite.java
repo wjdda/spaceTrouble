@@ -40,8 +40,9 @@ public class Sprite {
         this.srcImgRect = new Rect(0, srcHeight * frameCount, srcWidth, srcHeight * ( frameCount + 1));
 
         this.renderHeight = (int) ( screenHeight * imgScaleCoef / 100 );
-        this.renderWidth = this.renderHeight * srcWidth / srcHeight;
-        sHitBox = new hitBox(this.renderWidth, this.renderHeight );
+        this.renderWidth = (int) this.renderHeight * srcWidth / srcHeight;
+        //this.sHitBox = new hitBox(this.renderWidth, this.renderHeight );
+        sHitBox = new hitBox( this.origBmp, this.renderHeight, frameCount, srcHeight );
     }
 
     public boolean checkCollision (ArrayList<Point> hitBox) {

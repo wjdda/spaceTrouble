@@ -5,59 +5,93 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by RUINIVAN on 17.12.2015.
  */
 public class hitBox {
+    private ArrayList<Point> apexListOnScrn = new ArrayList<Point>();
     private ArrayList<Point> apexList = new ArrayList<Point>();
     private int apexShift = 10;
-    private int renderWidth;
-    private int renderHeight;
     Paint paint = new Paint();
 
     public hitBox ( int renderWidth, int renderHeight ) {
+        this.apexList.add(new Point(apexShift, apexShift));
+        this.apexList.add(new Point(renderWidth - apexShift, apexShift));
+        this.apexList.add(new Point(renderWidth - apexShift, renderHeight - apexShift));
+        this.apexList.add(new Point(apexShift, renderHeight - apexShift));
 
-        this.renderWidth = renderWidth;
-        this.renderHeight  = renderHeight;
-        apexList.add(new Point(apexShift, apexShift));
-        apexList.add(new Point(this.renderWidth - apexShift, apexShift));
-        apexList.add(new Point(this.renderWidth - apexShift, this.renderHeight - apexShift));
-        apexList.add(new Point(apexShift, this.renderHeight - apexShift));
+        for ( int i = 0; i < apexList.size(); i++ ) {
+            apexListOnScrn.add(new Point());
+        }
 
         paint.setColor(Color.RED);
     }
 
+    public hitBox ( Bitmap img , int renderHeight, int frameCount, int srcHeight )  {
+        float crop = (float) srcHeight / renderHeight ;
+        int step = Math.round( crop ) * 3;
+        int ph = srcHeight * frameCount + step;
+
+        while( srcHeight * frameCount < ph && ph < srcHeight * ( frameCount + 1 ) ) {
+                for ( int pw = 0; pw < img.getWidth(); pw += step ) {
+                    if ( Color.alpha(img.getPixel(pw, ph)) != 0 ) {
+                        this.apexList.add(new Point(Math.round(pw/crop), Math.round((ph - srcHeight * frameCount)/crop)));
+                        ph += step;
+                        break;
+                    }
+                }
+                ph += step;
+        }
+        ph -= step;
+        if (ph >= srcHeight * ( frameCount + 1 )) {
+            ph = srcHeight * ( frameCount + 1 ) - 1;
+        }
+        while( srcHeight * frameCount < ph && ph < srcHeight * ( frameCount + 1 ) ) {
+                for ( int pw = img.getWidth() - 1 ; pw > 0; pw -= step ) {
+                    if ( Color.alpha(img.getPixel(pw, ph)) != 0 ) {
+                        this.apexList.add(new Point(Math.round(pw/crop), Math.round((ph - srcHeight * frameCount)/crop)));
+                        ph -= step;
+                        break;
+                    }
+                }
+                ph -= step;
+        }
+
+        for ( int i = 0; i < apexList.size(); i++ ) {
+            apexListOnScrn.add(new Point());
+        }
+
+        paint.setColor(Color.GREEN);
+    }
+
     public ArrayList<Point> getHitBox () {
-        return apexList;
+        return apexListOnScrn;
     }
 
     public void updateHitBox (int x, int y){
-        apexList.set(0, new Point(x + apexShift, y + apexShift));
-        apexList.set(1, new Point(x + renderWidth - apexShift, y + apexShift));
-        apexList.set(2, new Point(x + renderWidth - apexShift, y + renderHeight - apexShift));
-        apexList.set(3, new Point(x + apexShift, y + renderHeight - apexShift));
-
+        for (int i = 0; i < apexList.size(); i++) {
+            Point point = apexList.get(i);
+            apexListOnScrn.set(i, new Point(point.x + x, point.y + y));
+        }
     }
 
     public void onDraw(Canvas canvas) {
-        for ( int i = 0; i < apexList.size(); i++ ) {
-            Point point = apexList.get(i);
-            if (i == apexList.size() - 1 ){
-                canvas.drawLine(apexList.get(i).x, apexList.get(i).y, apexList.get(0).x, apexList.get(0).y, paint);
+        for ( int i = 0; i < apexListOnScrn.size(); i++ ) {
+            Point point = apexListOnScrn.get(i);
+            if (i == apexListOnScrn.size() - 1 ){
+                canvas.drawLine(apexListOnScrn.get(i).x, apexListOnScrn.get(i).y, apexListOnScrn.get(0).x, apexListOnScrn.get(0).y, paint);
             } else {
-                canvas.drawLine(apexList.get(i).x, apexList.get(i).y, apexList.get(i+1).x, apexList.get(i+1).y, paint);
+                canvas.drawLine(apexListOnScrn.get(i).x, apexListOnScrn.get(i).y, apexListOnScrn.get(i+1).x, apexListOnScrn.get(i+1).y, paint);
             }
         }
     }
 
     public boolean checkCollision (ArrayList<Point> hitBox) {
-        Point a = new Point();
-        Point b = new Point();
+        Point a;
+        Point b;
         boolean isCollision = false;
 
         for (int j = 0; j < hitBox.size(); j++) {
@@ -68,11 +102,11 @@ public class hitBox {
                 a = hitBox.get(j);
                 b = hitBox.get(j + 1);
             }
-            for (int i = 0; i < apexList.size(); i++) {
-                if ( i == apexList.size() - 1 ) {
-                    isCollision = check(apexList.get(i), apexList.get(0), a, b);
+            for (int i = 0; i < apexListOnScrn.size(); i++) {
+                if ( i == apexListOnScrn.size() - 1 ) {
+                    isCollision = check(apexListOnScrn.get(i), apexListOnScrn.get(0), a, b);
                 } else {
-                    isCollision = check(apexList.get(i), apexList.get(i + 1), a, b);
+                    isCollision = check(apexListOnScrn.get(i), apexListOnScrn.get(i + 1), a, b);
                 }
                 if (isCollision == true) {
                     return isCollision;
