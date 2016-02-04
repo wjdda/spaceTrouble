@@ -1,4 +1,4 @@
-package com.example.divanstudio.firsttry;
+package com.divanstudio.firsttry.ST;
 
 /**
  * Created by aaivanov on 12/5/15.

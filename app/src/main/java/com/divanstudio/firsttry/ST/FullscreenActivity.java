@@ -1,4 +1,4 @@
-package com.example.divanstudio.firsttry;
+package com.divanstudio.firsttry.ST;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;

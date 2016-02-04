@@ -1,4 +1,4 @@
-package com.example.divanstudio.firsttry;
+package com.divanstudio.firsttry.ST;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

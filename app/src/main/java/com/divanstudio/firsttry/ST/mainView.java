@@ -1,4 +1,4 @@
-package com.example.divanstudio.firsttry;
+package com.divanstudio.firsttry.ST;
 
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -6,6 +6,8 @@ import android.view.SurfaceView;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+
+import com.example.divanstudio.firsttry.R;
 
 /**
 * Created by aaivanov on 11/29/15.
