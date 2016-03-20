@@ -22,6 +22,10 @@ public class Enemies {
         this.meteors.add(new Enemy(GameView, bmp, 1));
         this.meteors.add(new Enemy(GameView, bmp, 2));
         this.meteors.add(new Enemy(GameView, bmp, 3));
+        this.meteors.add(new Enemy(GameView, bmp, 0));
+        this.meteors.add(new Enemy(GameView, bmp, 1));
+        this.meteors.add(new Enemy(GameView, bmp, 2));
+        this.meteors.add(new Enemy(GameView, bmp, 3));
 
         paint = new Paint();
 
@@ -50,6 +54,24 @@ public class Enemies {
             canvas.drawRect(0, 0, 40, 40, paint);
         } else {
            // state.setState("Play");
+        }
+    }
+
+    public void moveUp () {
+        for(Enemy meteor : meteors) {
+            meteor.moveUp();
+        }
+    }
+
+    public void moveDown () {
+        for(Enemy meteor : meteors) {
+            meteor.moveDown();
+        }
+    }
+
+    public void moveStop () {
+        for(Enemy meteor : meteors) {
+            meteor.moveStop();
         }
     }
 }

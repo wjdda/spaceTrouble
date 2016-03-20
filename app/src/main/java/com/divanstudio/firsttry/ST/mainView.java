@@ -54,8 +54,9 @@ public class mainView extends SurfaceView  {
 
     public void initMainViewRes () {
         player.setPlayerData(this, BitmapFactory.decodeResource(getResources(), R.drawable.player));
-        controls = new Controls(this, BitmapFactory.decodeResource(getResources(), R.drawable.arrows));
+
         meteors = new Enemies(this, BitmapFactory.decodeResource(getResources(), R.drawable.cut_map_pixelize));
+        controls = new Controls(this, BitmapFactory.decodeResource(getResources(), R.drawable.arrows ), meteors);
         background = new Background(this, BitmapFactory.decodeResource(getResources(), R.drawable.bckgrnd_1280_720_pixelize));
     }
 

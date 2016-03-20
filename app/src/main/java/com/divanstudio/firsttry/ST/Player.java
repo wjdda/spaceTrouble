@@ -63,6 +63,10 @@ public class Player extends Sprite{
         }
     }
 
+    public double getPlayerSpeed () {
+        return this.pSpeed;
+    }
+
     public void moveUp () { ySpeed = pSpeed; }
 
     public void moveDown () { ySpeed = -pSpeed; }

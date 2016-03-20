@@ -14,17 +14,19 @@ public class Controls {
 
     private List<Control> Controls = new ArrayList<Control>();
     private Control menu;
+    private Enemies meteors;
 
     private State state;
 
     Player player;
 
-    public Controls (mainView GameView, Bitmap bmp) {
+    public Controls (mainView GameView, Bitmap bmp, Enemies meteors) {
         Controls.add(new Control(GameView, bmp, 0, 30, 50));
         Controls.add(new Control(GameView, bmp, 1, 30, 150));
         this.player = Player.getInstance();
         this.state = State.getInstance();
         menu = new Control(300, 50, 100, 100, "START");
+        this.meteors = meteors;
 
     }
 
@@ -52,7 +54,7 @@ public class Controls {
                 if(state.getState() == "Menu") {
                     state.setState("Play");
                 } else {
-                    player.moveStop();
+                    meteors.moveStop();
                 }
                 break;
         }
@@ -63,10 +65,10 @@ public class Controls {
             Control control = Controls.get(i);
             if (control.isCollision(event.getX(), event.getY())) {
                 if (i == 0){
-                    player.moveDown();
+                    meteors.moveDown();
                 }
                 if (i == 1) {
-                    player.moveUp();
+                    meteors.moveUp();
                 }
             }
         }

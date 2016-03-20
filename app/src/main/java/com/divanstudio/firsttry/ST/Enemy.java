@@ -14,6 +14,7 @@ public class Enemy extends Sprite {
     private static final int IMG_SIZE_COEFFICIENT = 25;
 
     private Player player;
+    private double pSpeed;
 
     private int xSpeed = 0;
     private int ySpeed = 0;
@@ -27,15 +28,17 @@ public class Enemy extends Sprite {
         super(gameView, origBmp, frameCount, IMG_SIZE_COEFFICIENT, BMP_ROWS, BMP_COLUMNS);
         this.rnd = new Random();
         this.player = Player.getInstance();
-        this.canvX = - renderWidth;
+        this.canvX = -renderWidth;
+        this.pSpeed = player.getPlayerSpeed();
     }
 
         /**Перемещение объекта, его направление*/
         private void update()
         {
-            if (canvX <= -renderWidth) {
+            if (canvX <= -renderWidth ) {
                 canvX = gameView.getWidth();
-                canvY = rnd.nextInt(gameView.getHeight() - renderHeight);
+                //canvY = rnd.nextInt(gameView.getHeight() - renderHeight);
+                canvY = 2*rnd.nextInt(gameView.getHeight()) - gameView.getHeight()/2;
                 xSpeed = -(rnd.nextInt(3) + 1) * gameView.getHeight() / 100 ;
             }
             canvX = canvX + xSpeed;
@@ -50,4 +53,10 @@ public class Enemy extends Sprite {
             update();
             super.onDraw(canvas, canvX, canvY);
         }
+
+    public void moveUp () { ySpeed = -(int)pSpeed; }
+
+    public void moveDown () { ySpeed = (int)pSpeed; }
+
+    public void moveStop () { ySpeed = 0; }
 }
