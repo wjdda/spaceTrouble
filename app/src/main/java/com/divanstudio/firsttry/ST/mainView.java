@@ -1,5 +1,8 @@
 package com.divanstudio.firsttry.ST;
 
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,11 +25,18 @@ public class mainView extends SurfaceView  {
     private Player player;
     private Background background;
 
+    private MediaPlayer mediaPlayer;
+    private int sBackground;
+
     public mainView(Context context) {
         super(context);
         gameLoopThread = new mainManager (this);
         player = Player.getInstance();
         holder = getHolder();
+
+        mediaPlayer = MediaPlayer.create(context, R.raw.gameplay);
+        mediaPlayer.setLooping(true); // Set looping
+        mediaPlayer.setVolume(100,100);
 
         this.holder.addCallback (new SurfaceHolder.Callback() {
             public void surfaceDestroyed (SurfaceHolder holder) {
@@ -39,12 +49,15 @@ public class mainView extends SurfaceView  {
                     } catch (InterruptedException e) {
                     }
                 }
+                mediaPlayer.stop();
+                mediaPlayer.release();
             }
 
             public void surfaceCreated(SurfaceHolder holder) {
-                gameLoopThread.setRunning(true);
-                gameLoopThread.start();
-                initMainViewRes();
+        gameLoopThread.setRunning(true);
+        gameLoopThread.start();
+        initMainViewRes();
+                mediaPlayer.start();
             }
 
             public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -52,7 +65,7 @@ public class mainView extends SurfaceView  {
         });
     }
 
-    public void initMainViewRes () {
+    public void initMainViewRes() {
         player.setPlayerData(this, BitmapFactory.decodeResource(getResources(), R.drawable.player));
 
         meteors = new Enemies(this, BitmapFactory.decodeResource(getResources(), R.drawable.cut_map_pixelize));
