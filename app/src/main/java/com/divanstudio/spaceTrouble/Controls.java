@@ -10,54 +10,71 @@ import java.util.List;
 /**
  * Created by aaivanov on 12/1/15.
  */
+
+
 public class Controls {
 
-    private List<Control> Controls = new ArrayList<Control>();
-    private Control menu;
+    private List<imgControl> navControls = new ArrayList<imgControl>();
+    private List<textControl> Menu = new ArrayList<textControl>();
     private Enemies meteors;
 
-    private State state;
+    private State state ;
 
     private Player player;
 
+    Function<Enemies> moveUp = new Function<Enemies>() {
+        @Override public void run(Enemies enemies) {
+//            enemies.moveUp();
+            enemies.moveDown();
+
+        }
+    };
+    Function<Enemies> moveDown = new Function<Enemies>() {
+        @Override public void run(Enemies enemies) {
+//            enemies.moveDown();
+            enemies.moveUp();
+        }
+    };
+
     public Controls (mainView GameView, Bitmap bmp, Enemies meteors) {
-        Controls.add(new Control(GameView, bmp, 0, 30, 50));  //ub move button
-        Controls.add(new Control(GameView, bmp, 1, 30, 150)); //dowen move button
         this.player = Player.getInstance();
         this.state = State.getInstance();
-        menu = new Control(300, 50, 100, 100, "START");
         this.meteors = meteors;
+
+        navControls.add(new imgControl(GameView, bmp, 0, 30, 50, moveUp));  //ub move button
+        navControls.add(new imgControl(GameView, bmp, 1, 30, 150, moveDown)); //down move button
+
+        Menu.add(new textControl(200, 50, 100, 100, "START"));
+        Menu.add(new textControl(200, 50, 100, 160, "MUTE"));
+        Menu.add(new textControl(200, 50, 100, 220, "EXIT"));
 
     }
 
     public void onDraw(Canvas canvas) {
-        if(state.getState() != "Menu") {
-        //if(!state.getState().equals("Menu")) {
-            for (Control control : Controls) {
-                control.onDraw(canvas);
-            }
-        }
         if (state.getState() == "Menu") {
-        //if (state.getState().equals("Menu")) {
-            menu.onDraw(canvas);
+            for (textControl menuItem : Menu) {
+                menuItem.onDraw(canvas);
+            }
+        } else {
+            for (imgControl imgControl : navControls) {
+                imgControl.onDraw(canvas);
+            }
         }
     }
 
-    // Обработка нажатий на контролы управления
     public void isCollision( MotionEvent event ) {
         switch ( event.getAction() ) {
-            case MotionEvent.ACTION_DOWN:             // нажатие
+            case MotionEvent.ACTION_DOWN:
                 mouseEventHandler(event);
                 break;
 
-            case MotionEvent.ACTION_MOVE:             //движение
+            case MotionEvent.ACTION_MOVE:
                 mouseEventHandler(event);
                 break;
 
-            case MotionEvent.ACTION_UP:               //отпускание
+            case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 if(state.getState() == "Menu") {
-                //if(state.getState().equals("Menu")) {
                     state.setState("Play");
                 } else {
                     meteors.moveStop();
@@ -66,16 +83,10 @@ public class Controls {
         }
     }
 
-    public void mouseEventHandler ( MotionEvent event) {
-        for (int i = Controls.size() - 1; i >= 0; i--) {
-            Control control = Controls.get(i);
-            if (control.isCollision(event.getX(), event.getY())) {
-                if (i == 0){
-                    meteors.moveDown();
-                }
-                if (i == 1) {
-                    meteors.moveUp();
-                }
+    private void mouseEventHandler ( MotionEvent event) {
+        for (imgControl imgControl : navControls) {
+            if (imgControl.isCollision(event.getX(), event.getY())) {
+                imgControl.callBack.run(meteors);
             }
         }
     }

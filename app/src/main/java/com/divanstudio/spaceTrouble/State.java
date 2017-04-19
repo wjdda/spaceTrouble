@@ -31,8 +31,6 @@ public class State {
         this.state = state;
     }
 
-    public String getState () {
-        return this.state;
-    }
+    public String getState () { return this.state; }
 
 }

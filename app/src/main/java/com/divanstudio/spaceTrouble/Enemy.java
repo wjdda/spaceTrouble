@@ -9,9 +9,9 @@ import java.util.Random;
  * Created by aaivanov on 12/5/15.
  */
 public class Enemy extends Sprite {
-    private static final int BMP_ROWS = 4;
-    private static final int BMP_COLUMNS = 1;
-    private static final int IMG_SIZE_COEFFICIENT = 25;
+    private static final int BMP_ROWS = globalBitmapInfo.getInstance().ENEMY_BMP_ROWS;
+    private static final int BMP_COLUMNS = globalBitmapInfo.getInstance().ENEMY_BMP_COLUMNS;
+    private static final int IMG_SIZE_COEFFICIENT = globalBitmapInfo.getInstance().ENEMY_IMG_SIZE_COEFFICIENT;
 
     private Player player;
     private double pSpeed;

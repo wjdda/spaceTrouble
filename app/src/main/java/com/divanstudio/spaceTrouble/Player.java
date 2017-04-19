@@ -10,10 +10,10 @@ public class Player extends Sprite{
     private static volatile Player instance;
     private State state;
 
-    private static final int SPEED_COEFFICIENT = 4;
-    private static final int IMG_SIZE_COEFFICIENT = 20;
-    private static final int BMP_ROWS = 1;
-    private static final int BMP_COLUMNS = 1;
+    private static final int SPEED_COEFFICIENT = globalBitmapInfo.getInstance().PLAYER_SPEED_COEFFICIENT;
+    private static final int IMG_SIZE_COEFFICIENT = globalBitmapInfo.getInstance().PLAYER_IMG_SIZE_COEFFICIENT;
+    private static final int BMP_ROWS = globalBitmapInfo.getInstance().PLAYER_BMP_ROWS;
+    private static final int BMP_COLUMNS = globalBitmapInfo.getInstance().PLAYER_BMP_COLUMNS;
 
     private int x = 0;
     private int y = 0;
