@@ -12,11 +12,12 @@ public class textControl extends Control {
 
     private String text;
 
-    public textControl (int width, int height, int canvX, int canvY, String text) {
+    public textControl (int width, int height, int canvX, int canvY, String text, Function callBack) {
         this.width = width;
         this.height = height;
         this.canvX = canvX;
         this.canvY = canvY;
+        this.callBack = callBack;
 
         this.paint = new Paint();
         this.text = text;
@@ -26,6 +27,7 @@ public class textControl extends Control {
         this.paint.setStyle(Paint.Style.STROKE);
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         canvas.drawRect(canvX, canvY, canvX + width, canvY + height, paint);
         canvas.drawText(text, canvX+width/2, canvY+height/2, paint);

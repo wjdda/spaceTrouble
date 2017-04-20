@@ -1,10 +1,12 @@
 package com.divanstudio.spaceTrouble;
 
+import android.graphics.Canvas;
+
 /**
  * Created by aaivanov on 04/19/17.
  */
 
-public class Control {
+public abstract class Control {
     protected int canvX;  //convas coords
     protected int canvY;  //convas coords
 
@@ -13,19 +15,7 @@ public class Control {
 
     public Function callBack;
 
-    public Control () {
-        this.width = 0;
-        this.height = 0;
-        this.canvX = 0;
-        this.canvY = 0;
-    }
-
-    public Control( int canvX, int canvY, int width, int height ) {
-        this.width = width;
-        this.height = height;
-        this.canvX = canvX;
-        this.canvY = canvY;
-    }
+    public Control () {}
 
     public boolean isCollision(float touchEventX, float touchEventY) {
         boolean isCollision = touchEventX > canvX
@@ -34,4 +24,5 @@ public class Control {
                 && touchEventY < canvY + height;
         return isCollision ;
     }
+    protected abstract void onDraw(Canvas canvas);
 }

@@ -52,9 +52,9 @@ public class mainView extends SurfaceView  {
             }
 
             public void surfaceCreated(SurfaceHolder holder) {
-        gameLoopThread.setRunning(true);
-        gameLoopThread.start();
-        initMainViewRes();
+                gameLoopThread.setRunning(true);
+                gameLoopThread.start();
+                initMainViewRes();
                 mediaPlayer.start();
             }
 

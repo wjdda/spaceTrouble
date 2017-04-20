@@ -22,7 +22,7 @@ public class imgControl extends Control {
         this.callBack = callBack;
     }
 
-
+    @Override
     public void onDraw(Canvas canvas) {
         Rect src = new Rect(width * frameCount, 0, width * ( frameCount + 1), height); //part of src bitmap
         Rect dst = new Rect(canvX, canvY, canvX + width, canvY + height); // screen area
