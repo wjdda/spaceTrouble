@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Created by RUINIVAN on 17.12.2015.
  */
-public class Sprite {
+public abstract class Sprite {
 //    private int BMP_ROWS;
 //    private int BMP_COLUMNS;
     Rect srcImgRect;

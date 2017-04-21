@@ -80,7 +80,7 @@ public class mainView extends SurfaceView  {
 
     public void setTouchEvent(MotionEvent event) {
         synchronized (getHolder()) {
-            controls.isCollision(event);
+            controls.checkTapAction(event);
         }
     }
 }

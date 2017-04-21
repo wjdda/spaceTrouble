@@ -26,7 +26,14 @@ public class Enemies {
         this.meteors.add(new Enemy(GameView, bmp, 1));
         this.meteors.add(new Enemy(GameView, bmp, 2));
         this.meteors.add(new Enemy(GameView, bmp, 3));
-
+        this.meteors.add(new Enemy(GameView, bmp, 0));
+        this.meteors.add(new Enemy(GameView, bmp, 1));
+        this.meteors.add(new Enemy(GameView, bmp, 2));
+        this.meteors.add(new Enemy(GameView, bmp, 3));
+        this.meteors.add(new Enemy(GameView, bmp, 0));
+        this.meteors.add(new Enemy(GameView, bmp, 1));
+        this.meteors.add(new Enemy(GameView, bmp, 2));
+        this.meteors.add(new Enemy(GameView, bmp, 3));
         paint = new Paint();
 
         paint.setColor(Color.RED);
@@ -49,11 +56,13 @@ public class Enemies {
         for(Enemy meteor : meteors) {
             meteor.onDraw(canvas);
         }
-        if (isCollision()) {
-           // state.setState("Menu");
-            canvas.drawRect(0, 0, 40, 40, paint);
-        } else {
-           // state.setState("Play");
+        if (state.getState() == "Play") {
+            if (isCollision()) {
+                // state.setState("Menu");
+                canvas.drawRect(0, 0, 40, 40, paint);
+            } else {
+                // state.setState("Play");
+            }
         }
     }
 

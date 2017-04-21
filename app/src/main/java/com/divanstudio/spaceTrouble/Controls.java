@@ -15,8 +15,7 @@ import java.util.List;
 
 public class Controls {
 
-    private List<Control> navControls = new ArrayList<Control>();
-    private List<textControl> Menu = new ArrayList<textControl>();
+    private List<Control> Controls = new ArrayList<Control>();
     private Enemies meteors;
     private State state ;
 
@@ -35,6 +34,12 @@ public class Controls {
     Function<Object> startGame = new Function<Object>() {
         @Override public void run(Object object) {
             state.setState("Play");
+        }
+    };
+
+    Function<Object> pauseGame = new Function<Object>() {
+        @Override public void run(Object object) {
+            state.setState("Pause");
         }
     };
 
@@ -61,60 +66,36 @@ public class Controls {
             this.state = State.getInstance();
             this.meteors = meteors;
 
-            navControls.add(new imgControl(GameView, bmp, 0, 30, 50, moveUp));  //ub move button
-            navControls.add(new imgControl(GameView, bmp, 1, 30, 150, moveDown)); //down move button
-            navControls.add(new textControl(30, 30, 300, 5, "P", _emptyFunc)); //Pause
-            navControls.add(new textControl(30, 30, 335, 5, "M", goToMenu)); // go to menu
+            Controls.add(new imgControl(GameView, bmp, 0, 30, 50, moveUp, "Play"));     //ub move button
+            Controls.add(new imgControl(GameView, bmp, 1, 30, 150, moveDown, "Play"));  //down move button
 
-            Menu.add(new textControl(200, 50, 100, 100, "START", startGame));
-            Menu.add(new textControl(200, 50, 100, 160, "MUTE", _emptyFunc));
-            Menu.add(new textControl(200, 50, 100, 220, "EXIT", exitGame));
+            Controls.add(new textControl(30, 30, 300, 5, "P", pauseGame, "Play"));      //Pause
+            Controls.add(new textControl(30, 30, 335, 5, "M", goToMenu, "Play"));       // go to menu
+
+            Controls.add(new textControl(200, 50, 100, 100, "START", startGame, "Menu"));
+            Controls.add(new textControl(200, 50, 100, 160, "MUTE", _emptyFunc, "Menu"));
+            Controls.add(new textControl(200, 50, 100, 220, "EXIT", exitGame, "Menu"));
+
+            Controls.add(new textControl(200, 50, 100, 100, "RESUME", startGame, "Pause"));
 
     }
 
     public void onDraw(Canvas canvas) {
-        if (state.getState() == "Menu") {
-            for (textControl menuItem : Menu) {
-                menuItem.onDraw(canvas);
-            }
-        } else {
-            for (Control imgControl : navControls) {
-                imgControl.onDraw(canvas);
-            }
+        for (Control imgControl : Controls) {
+            imgControl.onDraw(canvas);
         }
     }
 
-    public void isCollision( MotionEvent event ) {
+    public void checkTapAction( MotionEvent event ) {
         switch ( event.getAction() ) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                navControlEventHandler(event);
-                break;
-
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                if(state.getState() == "Menu") {
-                    menuControlEventHandler(event);
-                } else {
-                    meteors.moveStop();
+                for (Control menuControl : Controls) {
+                    if (menuControl.isCollision(event.getX(), event.getY())) {
+                        menuControl.runCallBack();
+                    }
                 }
                 break;
-        }
-    }
-
-    private void navControlEventHandler ( MotionEvent event) {
-        for (Control imgControl : navControls) {
-            if (imgControl.isCollision(event.getX(), event.getY())) {
-                imgControl.callBack.run(null);
-            }
-        }
-    }
-
-    private void menuControlEventHandler ( MotionEvent event) {
-        for (textControl menuControl : Menu) {
-            if (menuControl.isCollision(event.getX(), event.getY())) {
-                menuControl.callBack.run(null);
-            }
         }
     }
 }

@@ -13,11 +13,16 @@ public abstract class Control {
     protected int width;
     protected int height;
 
-    public Function callBack;
+    protected Function callBack;
+
+    protected String existedState;
+
+    protected State state = State.getInstance();
 
     public Control () {}
 
     public boolean isCollision(float touchEventX, float touchEventY) {
+        if ( state.getState() != existedState && existedState != null ) return false;
         boolean isCollision = touchEventX > canvX
                 && touchEventX < canvX + width
                 && touchEventY > canvY
@@ -25,4 +30,9 @@ public abstract class Control {
         return isCollision ;
     }
     protected abstract void onDraw(Canvas canvas);
+
+    public void runCallBack () {
+        if ( callBack != null ) { callBack.run(null); }
+    }
+
 }

@@ -15,6 +15,7 @@ public class Enemy extends Sprite {
 
     private Player player;
     private double pSpeed;
+    private State state;
 
     private int xSpeed = 0;
     private int ySpeed = 0;
@@ -30,19 +31,20 @@ public class Enemy extends Sprite {
         this.player = Player.getInstance();
         this.canvX = -renderWidth;
         this.pSpeed = player.getPlayerSpeed();
+        this.state = State.getInstance();
     }
 
-        /**Перемещение объекта, его направление*/
-        private void update()
+    private void update()
         {
             if (canvX <= -renderWidth ) {
                 canvX = gameView.getWidth();
                 //canvY = rnd.nextInt(gameView.getHeight() - renderHeight);
-                canvY = 2*rnd.nextInt(gameView.getHeight()) - gameView.getHeight()/2;
+                canvY = 6*rnd.nextInt(gameView.getHeight()) - gameView.getHeight()*3;
                 xSpeed = -(rnd.nextInt(3) + 1) * gameView.getHeight() / 100 ;
             }
             canvX = canvX + xSpeed;
             canvY = canvY + ySpeed;
+            moveStop ();
         }
 
         public boolean isCollision () {
@@ -50,7 +52,9 @@ public class Enemy extends Sprite {
         }
 
         public void onDraw(Canvas canvas) {
-            update();
+            if(state.getState() != "Pause") {
+                update();
+            }
             super.onDraw(canvas, canvX, canvY);
         }
 

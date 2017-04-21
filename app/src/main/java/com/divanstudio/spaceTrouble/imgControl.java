@@ -12,7 +12,7 @@ public class imgControl extends Control {
 
     private Bitmap controlBitmap;           // TODO SourceControlsBitmap
 
-    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, Function callBack) {
+    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, Function callBack, String existedState) {
         this.controlBitmap = control;
         this.frameCount = frameCount;
         this.width = control.getWidth() / globalBitmapInfo.getInstance().NAV_CONTROLS_BMP_COLUMNS;
@@ -20,12 +20,23 @@ public class imgControl extends Control {
         this.canvX = canvX;
         this.canvY = canvY + gameView.getHeight() - height * 5;
         this.callBack = callBack;
+        this.existedState = existedState;
+    }
+
+    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, Function callBack) {
+        this(gameView, control, frameCount, canvX, canvY, callBack, null);
+    }
+
+    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY) {
+        this(gameView, control, frameCount, canvX, canvY, null);
     }
 
     @Override
     public void onDraw(Canvas canvas) {
-        Rect src = new Rect(width * frameCount, 0, width * ( frameCount + 1), height); //part of src bitmap
-        Rect dst = new Rect(canvX, canvY, canvX + width, canvY + height); // screen area
-        canvas.drawBitmap(controlBitmap, src, dst, null);
+        if ( state.getState() == existedState || existedState == null ) {
+            Rect src = new Rect(width * frameCount, 0, width * (frameCount + 1), height); //part of src bitmap
+            Rect dst = new Rect(canvX, canvY, canvX + width, canvY + height); // screen area
+            canvas.drawBitmap(controlBitmap, src, dst, null);
+        }
     }
 }

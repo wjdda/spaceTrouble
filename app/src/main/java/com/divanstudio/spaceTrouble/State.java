@@ -9,6 +9,7 @@ public class State {
     private static volatile State instance;
 
     private String state = new String();
+    private String musicState = new String();
 
     public static State getInstance() {
         State localInstance = instance;
