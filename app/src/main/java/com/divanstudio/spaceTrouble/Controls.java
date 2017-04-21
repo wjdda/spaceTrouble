@@ -17,7 +17,7 @@ public class Controls {
 
     private List<Control> Controls = new ArrayList<Control>();
     private Enemies meteors;
-    private State state ;
+    private StateManager state ;
 
     private Player player;
 
@@ -33,19 +33,19 @@ public class Controls {
     };
     Function<Object> startGame = new Function<Object>() {
         @Override public void run(Object object) {
-            state.setState("Play");
+            state.setState(StateManager.States.PLAY);
         }
     };
 
     Function<Object> pauseGame = new Function<Object>() {
         @Override public void run(Object object) {
-            state.setState("Pause");
+            state.setState(StateManager.States.PAUSE);
         }
     };
 
     Function<Object> goToMenu = new Function<Object>() {
         @Override public void run(Object object) {
-            state.setState("Menu");
+            state.setState(StateManager.States.MENU);
         }
     };
 
@@ -63,20 +63,21 @@ public class Controls {
 
         public Controls (mainView GameView, Bitmap bmp, Enemies meteors) {
             this.player = Player.getInstance();
-            this.state = State.getInstance();
+            this.state = StateManager.getInstance();
             this.meteors = meteors;
 
-            Controls.add(new imgControl(GameView, bmp, 0, 30, 50, moveUp, "Play"));     //ub move button
-            Controls.add(new imgControl(GameView, bmp, 1, 30, 150, moveDown, "Play"));  //down move button
+            Controls.add(new imgControl(GameView, bmp, 0, 30, 50, moveUp, StateManager.States.PLAY));     //ub move button
+            Controls.add(new imgControl(GameView, bmp, 1, 30, 150, moveDown, StateManager.States.PLAY));  //down move button
 
-            Controls.add(new textControl(30, 30, 300, 5, "P", pauseGame, "Play"));      //Pause
-            Controls.add(new textControl(30, 30, 335, 5, "M", goToMenu, "Play"));       // go to menu
+            Controls.add(new textControl(30, 30, 300, 5, "P", pauseGame, StateManager.States.PLAY));      //Pause
+            Controls.add(new textControl(30, 30, 335, 5, "M", goToMenu, StateManager.States.PLAY));       // go to menu
 
-            Controls.add(new textControl(200, 50, 100, 100, "START", startGame, "Menu"));
-            Controls.add(new textControl(200, 50, 100, 160, "MUTE", _emptyFunc, "Menu"));
-            Controls.add(new textControl(200, 50, 100, 220, "EXIT", exitGame, "Menu"));
+            Controls.add(new textControl(200, 50, 100, 100, "START", startGame, StateManager.States.MENU));
+            Controls.add(new textControl(200, 50, 100, 160, "MUTE", _emptyFunc, StateManager.States.MENU));
+            Controls.add(new textControl(200, 50, 100, 220, "EXIT", exitGame, StateManager.States.MENU));
 
-            Controls.add(new textControl(200, 50, 100, 100, "RESUME", startGame, "Pause"));
+            Controls.add(new textControl(200, 50, 100, 100, "RESUME", startGame, StateManager.States.PAUSE));
+            Controls.add(new textControl(200, 50, 100, 100, "CAME OVER", goToMenu, StateManager.States.GAMEOVER));
 
     }
 

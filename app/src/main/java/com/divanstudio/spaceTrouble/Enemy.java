@@ -15,7 +15,7 @@ public class Enemy extends Sprite {
 
     private Player player;
     private double pSpeed;
-    private State state;
+    private StateManager state;
 
     private int xSpeed = 0;
     private int ySpeed = 0;
@@ -31,7 +31,7 @@ public class Enemy extends Sprite {
         this.player = Player.getInstance();
         this.canvX = -renderWidth;
         this.pSpeed = player.getPlayerSpeed();
-        this.state = State.getInstance();
+        this.state = StateManager.getInstance();
     }
 
     private void update()
@@ -52,7 +52,7 @@ public class Enemy extends Sprite {
         }
 
         public void onDraw(Canvas canvas) {
-            if(state.getState() != "Pause") {
+            if(state.getState() != StateManager.States.PAUSE) {
                 update();
             }
             super.onDraw(canvas, canvX, canvY);

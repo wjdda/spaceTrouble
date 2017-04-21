@@ -13,11 +13,11 @@ import java.util.List;
  */
 public class Enemies {
     private List<Enemy> meteors = new ArrayList<Enemy>();
-    private State state;
+    private StateManager state;
     private Paint paint;
 
     public Enemies(mainView GameView, Bitmap bmp) {
-        this.state = State.getInstance();
+        this.state = StateManager.getInstance();
         this.meteors.add(new Enemy(GameView, bmp, 0));
         this.meteors.add(new Enemy(GameView, bmp, 1));
         this.meteors.add(new Enemy(GameView, bmp, 2));
@@ -56,9 +56,9 @@ public class Enemies {
         for(Enemy meteor : meteors) {
             meteor.onDraw(canvas);
         }
-        if (state.getState() == "Play") {
+        if (state.getState() == StateManager.States.PLAY) {
             if (isCollision()) {
-                // state.setState("Menu");
+                state.setState(StateManager.States.GAMEOVER);
                 canvas.drawRect(0, 0, 40, 40, paint);
             } else {
                 // state.setState("Play");

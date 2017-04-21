@@ -12,7 +12,7 @@ public class imgControl extends Control {
 
     private Bitmap controlBitmap;           // TODO SourceControlsBitmap
 
-    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, Function callBack, String existedState) {
+    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, Function callBack, StateManager.States existedState) {
         this.controlBitmap = control;
         this.frameCount = frameCount;
         this.width = control.getWidth() / globalBitmapInfo.getInstance().NAV_CONTROLS_BMP_COLUMNS;

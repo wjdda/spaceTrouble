@@ -15,9 +15,9 @@ public abstract class Control {
 
     protected Function callBack;
 
-    protected String existedState;
+    protected StateManager.States existedState;
 
-    protected State state = State.getInstance();
+    protected StateManager state = StateManager.getInstance();
 
     public Control () {}
 

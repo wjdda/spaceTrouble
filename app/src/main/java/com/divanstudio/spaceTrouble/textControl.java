@@ -11,8 +11,10 @@ public class textControl extends Control {
     private Paint paint;
 
     private String text;
+    private int testPosX;
+    private int textPosY;
 
-    public textControl (int width, int height, int canvX, int canvY, String text, Function callBack, String existedState) {
+    public textControl (int width, int height, int canvX, int canvY, String text, Function callBack, StateManager.States existedState) {
         this.width = width;
         this.height = height;
         this.canvX = canvX;
@@ -26,6 +28,8 @@ public class textControl extends Control {
         this.paint.setColor(Color.RED);
         this.paint.setStrokeWidth(0);
         this.paint.setStyle(Paint.Style.STROKE);
+        this.testPosX = (int) ((width / 2)  - paint.measureText(text) / 2 );
+        this.textPosY = (int) ((height / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
     }
 
     public textControl (int width, int height, int canvX, int canvY, String text, Function callBack) {
@@ -40,7 +44,7 @@ public class textControl extends Control {
     public void onDraw(Canvas canvas) {
         if ( state.getState() == existedState || existedState == null ) {
             canvas.drawRect(canvX, canvY, canvX + width, canvY + height, paint);
-            canvas.drawText(text, canvX + width / 2, canvY + height / 2, paint);
+            canvas.drawText(text, canvX + testPosX, canvY + textPosY, paint);
         }
     }
 }

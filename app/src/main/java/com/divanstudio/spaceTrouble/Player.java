@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 
 public class Player extends Sprite{
     private static volatile Player instance;
-    private State state;
+    private StateManager state;
 
     private static final int SPEED_COEFFICIENT = globalBitmapInfo.getInstance().PLAYER_SPEED_COEFFICIENT;
     private static final int IMG_SIZE_COEFFICIENT = globalBitmapInfo.getInstance().PLAYER_IMG_SIZE_COEFFICIENT;
@@ -23,7 +23,7 @@ public class Player extends Sprite{
 
     private Player () {
         super();
-        this.state = State.getInstance();
+        this.state = StateManager.getInstance();
     }
 
     public static Player getInstance() {
@@ -55,7 +55,7 @@ public class Player extends Sprite{
     }
 
     public void onDraw(Canvas canvas) {
-        if(state.getState() == "Play") {
+        if(state.getState() == StateManager.States.PLAY) {
             update();
             super.onDraw(canvas, x, y);
         } else {
