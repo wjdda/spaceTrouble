@@ -14,6 +14,9 @@ import java.util.ArrayList;
 public class hitBox {
     private ArrayList<Point> apexListOnScrn = new ArrayList<Point>();
     private ArrayList<Point> apexList = new ArrayList<Point>();
+    private Point centerPoint;
+    private Point centerPointOnScrn;
+    int maxDetectLenght;
     private int apexShift = 10;
     Paint paint = new Paint();
 
@@ -34,7 +37,8 @@ public class hitBox {
         float crop = (float) srcHeight / renderHeight ;
         int step = Math.round( crop ) * 3;
         int ph = srcHeight * frameCount + step;
-
+        centerPoint = new Point((int) (img.getWidth() / crop / 2), (int) renderHeight/2 );
+        maxDetectLenght = renderHeight;
         while( srcHeight * frameCount < ph && ph < srcHeight * ( frameCount + 1 ) ) {
                 for ( int pw = 0; pw < img.getWidth(); pw += step ) {
                     if ( Color.alpha(img.getPixel(pw, ph)) != 0 ) {
@@ -70,8 +74,16 @@ public class hitBox {
     public ArrayList<Point> getHitBox () {
         return apexListOnScrn;
     }
+    public Point getCenterPoint () {
+        return centerPointOnScrn;
+    }
+
+    public int getMaxDetectLenght () {
+        return maxDetectLenght;
+    }
 
     public void updateHitBox (int x, int y){
+        centerPointOnScrn = new Point(centerPoint.x + x, centerPoint.y + y);
         for (int i = 0; i < apexList.size(); i++) {
             Point point = apexList.get(i);
             apexListOnScrn.set(i, new Point(point.x + x, point.y + y));
@@ -87,12 +99,23 @@ public class hitBox {
                 canvas.drawLine(apexListOnScrn.get(i).x, apexListOnScrn.get(i).y, apexListOnScrn.get(i+1).x, apexListOnScrn.get(i+1).y, paint);
             }
         }
+        canvas.drawPoint(centerPointOnScrn.x,centerPointOnScrn.y, paint);
+
     }
 
-    public boolean checkCollision (ArrayList<Point> hitBox) {
+    public boolean checkCollision (ArrayList<Point> hitBox, Point centerPoint, int maxDetectLenght) {
         Point a;
         Point b;
         boolean isCollision = false;
+        int LN = 0;
+        if (centerPointOnScrn != null) {
+            int x = centerPointOnScrn.x;
+            int y = centerPointOnScrn.y;
+
+            LN = (centerPoint.x - centerPointOnScrn.x) * (centerPoint.x - centerPointOnScrn.x) + (centerPoint.y - centerPointOnScrn.y) * (centerPoint.y - centerPointOnScrn.y);
+        }
+
+        if ( LN > (maxDetectLenght + this.maxDetectLenght)*(maxDetectLenght + this.maxDetectLenght) ) return isCollision;
 
         for (int j = 0; j < hitBox.size(); j++) {
             if ( j == hitBox.size() - 1 ) {

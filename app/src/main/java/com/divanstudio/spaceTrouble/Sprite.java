@@ -46,12 +46,21 @@ public abstract class Sprite {
         sHitBox = new hitBox( this.origBmp, this.renderHeight, frameCount, srcHeight );
     }
 
-    public boolean checkCollision (ArrayList<Point> hitBox) {
-       return sHitBox.checkCollision(hitBox);
+    public boolean checkCollision (ArrayList<Point> hitBox, Point centerPoint, int maxDetectLenght) {
+       return sHitBox.checkCollision(hitBox, centerPoint, maxDetectLenght);
     }
 
     public ArrayList<Point> getHitBox () {
         return sHitBox.getHitBox();
+    }
+
+
+    public Point getCenterPoint () {
+        return sHitBox.getCenterPoint();
+    }
+
+    public int getMaxDetectLenght () {
+        return sHitBox.getMaxDetectLenght();
     }
 
     public void onDraw(Canvas canvas, int x, int y) {

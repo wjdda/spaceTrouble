@@ -48,7 +48,7 @@ public class Enemy extends Sprite {
         }
 
         public boolean isCollision () {
-            return player.checkCollision(getHitBox());
+            return player.checkCollision(getHitBox(), getCenterPoint(), getMaxDetectLenght() );
         }
 
         public void onDraw(Canvas canvas) {
