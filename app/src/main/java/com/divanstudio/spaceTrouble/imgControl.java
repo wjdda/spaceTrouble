@@ -12,23 +12,24 @@ public class imgControl extends Control {
 
     private Bitmap controlBitmap;           // TODO SourceControlsBitmap
 
-    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, Function callBack, StateManager.States existedState) {
+    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, String soundName, Function callBack, StateManager.States existedState) {
         this.controlBitmap = control;
         this.frameCount = frameCount;
         this.width = control.getWidth() / globalBitmapInfo.getInstance().NAV_CONTROLS_BMP_COLUMNS;
         this.height = control.getHeight() / globalBitmapInfo.getInstance().NAV_CONTROLS_BMP_ROWS;
         this.canvX = canvX;
         this.canvY = canvY + gameView.getHeight() - height * 5;
+        this.collisionSound = soundName;
         this.callBack = callBack;
         this.existedState = existedState;
     }
 
-    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, Function callBack) {
-        this(gameView, control, frameCount, canvX, canvY, callBack, null);
+    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, String soundName, Function callBack) {
+        this(gameView, control, frameCount, canvX, canvY, soundName, callBack, null);
     }
 
-    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY) {
-        this(gameView, control, frameCount, canvX, canvY, null);
+    public imgControl(mainView gameView, Bitmap control, int frameCount, int canvX, int canvY, String soundName) {
+        this(gameView, control, frameCount, canvX, canvY, soundName, null);
     }
 
     @Override

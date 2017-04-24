@@ -18,34 +18,35 @@ public class Enemies {
 
     public Enemies(mainView GameView, Bitmap bmp) {
         this.state = StateManager.getInstance();
-        this.meteors.add(new Enemy(GameView, bmp, 0));
-        this.meteors.add(new Enemy(GameView, bmp, 1));
-        this.meteors.add(new Enemy(GameView, bmp, 2));
-        this.meteors.add(new Enemy(GameView, bmp, 3));
-        this.meteors.add(new Enemy(GameView, bmp, 0));
-        this.meteors.add(new Enemy(GameView, bmp, 1));
-        this.meteors.add(new Enemy(GameView, bmp, 2));
-        this.meteors.add(new Enemy(GameView, bmp, 3));
-        this.meteors.add(new Enemy(GameView, bmp, 0));
-        this.meteors.add(new Enemy(GameView, bmp, 1));
-        this.meteors.add(new Enemy(GameView, bmp, 2));
-        this.meteors.add(new Enemy(GameView, bmp, 3));
-        this.meteors.add(new Enemy(GameView, bmp, 0));
-        this.meteors.add(new Enemy(GameView, bmp, 1));
-        this.meteors.add(new Enemy(GameView, bmp, 2));
-        this.meteors.add(new Enemy(GameView, bmp, 3));
+        this.meteors.add(new Enemy(GameView, bmp, 0, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 1, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 2, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 3, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 0, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 1, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 2, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 3, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 0, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 1, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 2, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 3, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 0, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 1, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 2, "ship_punch"));
+        this.meteors.add(new Enemy(GameView, bmp, 3, "ship_punch"));
         paint = new Paint();
 
         paint.setColor(Color.RED);
         paint.setStrokeWidth(0);
         paint.setStyle(Paint.Style.STROKE);
-
-
     }
 
     public boolean isCollision () {
         for(Enemy meteor : meteors) {
             if(meteor.isCollision()){
+                // Коллизия метеора издаёт звук удара метеора
+                meteor.playSound();
+
                 return true;
             }
         }

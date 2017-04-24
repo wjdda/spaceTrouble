@@ -14,7 +14,7 @@ public class textControl extends Control {
     private int testPosX;
     private int textPosY;
 
-    public textControl (int width, int height, int canvX, int canvY, String text, Function callBack, StateManager.States existedState) {
+    public textControl (int width, int height, int canvX, int canvY, String text, String soundName, Function callBack, StateManager.States existedState) {
         this.width = width;
         this.height = height;
         this.canvX = canvX;
@@ -24,6 +24,7 @@ public class textControl extends Control {
 
         this.paint = new Paint();
         this.text = text;
+        this.collisionSound = soundName;
 
         this.paint.setColor(Color.RED);
         this.paint.setStrokeWidth(0);
@@ -32,12 +33,12 @@ public class textControl extends Control {
         this.textPosY = (int) ((height / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
     }
 
-    public textControl (int width, int height, int canvX, int canvY, String text, Function callBack) {
-        this(width, height, canvX, canvY, text, callBack, null);
+    public textControl (int width, int height, int canvX, int canvY, String text, String soundName, Function callBack) {
+        this(width, height, canvX, canvY, text, soundName, callBack, null);
     }
 
-    public textControl (int width, int height, int canvX, int canvY, String text) {
-        this (width, height, canvX, canvY, text, null);
+    public textControl (int width, int height, int canvX, int canvY, String text, String soundName) {
+        this (width, height, canvX, canvY, text, soundName, null);
     }
 
     @Override
